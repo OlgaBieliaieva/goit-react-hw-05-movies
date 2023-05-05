@@ -9,6 +9,7 @@ function Cast() {
   const { movieId } = useParams();
   const query = Number(movieId);
   const [cast, setCast] = useState([]);
+  const [status, setStatus] = useState('');
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -18,21 +19,18 @@ function Cast() {
 
     getCastById(query)
       .then(response => {
-        console.log(response.data);
         setCast(response.data.cast);
+        setStatus(response.status);
       })
       .catch(error => {
         setError(error.message);
       });
   }, [query]);
 
-  console.log(cast);
   return (
     <div className={css.castContainer}>
       <h3 className={css.subTitle}>Cast</h3>
-      {(error || cast.length === 0) && (
-        <p className={css.error}>Results not found</p>
-      )}
+
       {cast.length > 0 && (
         <ul className={css.gallery}>
           {cast.map(({ profile_path, name, character }) => {
@@ -55,6 +53,10 @@ function Cast() {
             );
           })}
         </ul>
+      )}
+      {error && <p className={css.error}>Results not found</p>}
+      {status === 200 && cast.length === 0 && (
+        <p className={css.error}>Results not found</p>
       )}
     </div>
   );

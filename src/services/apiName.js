@@ -9,12 +9,12 @@ const REQUEST_OPTIONS = {
 
 async function getMovieByName(query) {
   REQUEST_OPTIONS.query = query.toLowerCase().trim();
-  console.log(REQUEST_OPTIONS);
+  
   const options = new URLSearchParams(REQUEST_OPTIONS);
 
   try {
     const response = await axios.get(`${BASE_URL}${options}`);
-    console.log(response);
+    
     return response;
   } catch (error) {
     console.log(error.message);

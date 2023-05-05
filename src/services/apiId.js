@@ -8,13 +8,12 @@ const REQUEST_OPTIONS = {
 
 export function getMovieById(id) {
   REQUEST_OPTIONS.movie_id = id;
-  console.log(id);
 
   try {
     const response = axios.get(
       `${BASE_URL}${REQUEST_OPTIONS.movie_id}?api_key=${REQUEST_OPTIONS.api_key}`
     );
-    console.log(response);
+
     return response;
   } catch (error) {
     console.log(error.message);
@@ -23,13 +22,12 @@ export function getMovieById(id) {
 
 export function getCastById(id) {
   REQUEST_OPTIONS.movie_id = id;
-  console.log(id);
 
   try {
     const response = axios.get(
       `${BASE_URL}${REQUEST_OPTIONS.movie_id}/credits?api_key=${REQUEST_OPTIONS.api_key}`
     );
-    console.log(response);
+
     return response;
   } catch (error) {
     console.log(error.message);
@@ -38,13 +36,12 @@ export function getCastById(id) {
 
 export function getReviewsById(id) {
   REQUEST_OPTIONS.movie_id = id;
-  console.log(id);
 
   try {
     const response = axios.get(
       `${BASE_URL}${REQUEST_OPTIONS.movie_id}/reviews?api_key=${REQUEST_OPTIONS.api_key}`
     );
-    console.log(response);
+
     return response;
   } catch (error) {
     console.log(error.message);

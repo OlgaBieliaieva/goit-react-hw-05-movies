@@ -15,9 +15,9 @@ function Movies() {
     if (movie_title.length === 0) {
       return;
     }
+
     getMovieByName(movie_title)
       .then(response => {
-        console.log(response);
         setMovies(response.data.results);
         setStatus(response.status);
       })
@@ -28,10 +28,10 @@ function Movies() {
 
   const handleFormSubmit = e => {
     e.preventDefault(e);
-    setSearchParams({ movie_title: e.target[0].value });
+    const param = e.target[0].value;
+    const currentParam = param !== '' ? { movie_title: param } : {};
+    setSearchParams(currentParam);
   };
-
-  console.log(status);
 
   return (
     <main className={css.pageContainer}>
@@ -41,6 +41,7 @@ function Movies() {
             className={css.searchField}
             type="text"
             placeholder="start searching"
+            autoComplete="off"
           />
         </label>
         <button className={css.searchButton} type="submit">
@@ -51,17 +52,19 @@ function Movies() {
       {status === 200 && movies.length === 0 && (
         <p className={css.error}>Results not found</p>
       )}
-      <ul className={css.moviesList}>
-        {movies.map(({ title, id }) => {
-          return (
-            <li className={css.link} key={id}>
-              <Link to={`${id}`} state={{ from: location }}>
-                {title}
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
+      {movies.length > 0 && (
+        <ul className={css.moviesList}>
+          {movies.map(({ title, id }) => {
+            return (
+              <li className={css.link} key={id}>
+                <Link to={`${id}`} state={{ from: location }}>
+                  {title}
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      )}
     </main>
   );
 }

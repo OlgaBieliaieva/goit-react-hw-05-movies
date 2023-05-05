@@ -1,5 +1,5 @@
+import PropTypes, { shape } from 'prop-types';
 import css from './Info.module.css';
-//! Prop-types
 
 function Info({ movieInfo }) {
   const { poster_path, title, release_date, vote_average, overview, genres } =
@@ -30,3 +30,16 @@ function Info({ movieInfo }) {
   );
 }
 export default Info;
+
+Info.propTypes = {
+  movieInfo: PropTypes.objectOf(
+    shape({
+      poster_path: PropTypes.string,
+      title: PropTypes.string,
+      release_date: PropTypes.string,
+      vote_average: PropTypes.number,
+      overview: PropTypes.string,
+      genres: PropTypes.arrayOf(PropTypes.object),
+    })
+  ),
+};

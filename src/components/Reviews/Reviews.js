@@ -7,33 +7,28 @@ function Reviews() {
   const { movieId } = useParams();
   const query = Number(movieId);
   const [reviews, setReviews] = useState([]);
+  const [status, setStatus] = useState('');
   const [error, setError] = useState('');
-
-  console.log(query);
 
   useEffect(() => {
     if (!query) {
-      console.log('gjh,b');
       return;
     }
 
     getReviewsById(query)
       .then(response => {
-        console.log(response.data);
         setReviews(response.data.results);
+        setStatus(response.status);
       })
       .catch(error => {
         setError(error.message);
       });
   }, [query]);
 
-  console.log(reviews);
   return (
     <div className={css.reviewsContainer}>
       <h3 className={css.subTitle}>Reviews</h3>
-      {(error || reviews.length === 0) && (
-        <p className={css.error}>Results not found</p>
-      )}
+
       {reviews.length > 0 && (
         <ul className={css.reviewsList}>
           {reviews.map(({ author, content, created_at, id }) => {
@@ -51,6 +46,10 @@ function Reviews() {
             );
           })}
         </ul>
+      )}
+      {error && <p className={css.error}>Results not found</p>}
+      {status === 200 && reviews.length === 0 && (
+        <p className={css.error}>Results not found</p>
       )}
     </div>
   );

@@ -1,7 +1,7 @@
 import { useParams, useLocation, Link, Outlet } from 'react-router-dom';
 import { useState, useRef, useEffect, Suspense } from 'react';
 import Loader from 'components/Loader/Loader';
-import * as Api from '../services/apiId';
+import { getMovieById } from '../services/apiId';
 import Info from '../components/Info/Info';
 import css from './MovieDetails.module.css';
 
@@ -10,7 +10,7 @@ function MovieDetails() {
   const location = useLocation();
   const backLinkLocationRef = useRef(location.state?.from ?? '/');
   const query = Number(movieId);
-  const [movie, setMovie] = useState([]);
+  const [movie, setMovie] = useState({});
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -18,7 +18,7 @@ function MovieDetails() {
       return;
     }
 
-    Api.getMovieById(query)
+    getMovieById(query)
       .then(response => {
         setMovie(response.data);
       })
@@ -26,8 +26,6 @@ function MovieDetails() {
         setError(error.message);
       });
   }, [query]);
-
-  console.log(movie);
 
   return (
     <main className={css.pageContainer}>
