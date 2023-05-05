@@ -1,0 +1,22 @@
+.infoContainer {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  margin-bottom: 16px;
+}
+.wrapper {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.title {
+  margin-bottom: 12px;
+}
+.contentWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.subTitle {
+  margin: 8px 0;
+}

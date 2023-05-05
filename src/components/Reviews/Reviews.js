@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getReviewsById } from '../../services/apiId';
-//! Prop-types
+import css from './Reviews.module.css';
 
 function Reviews() {
   const { movieId } = useParams();
   const query = Number(movieId);
   const [reviews, setReviews] = useState([]);
+  const [error, setError] = useState('');
 
   console.log(query);
 
@@ -22,22 +23,30 @@ function Reviews() {
         setReviews(response.data.results);
       })
       .catch(error => {
-        console.log(error.message);
+        setError(error.message);
       });
   }, [query]);
 
   console.log(reviews);
   return (
-    <div>
-      <h1>Reviews</h1>
+    <div className={css.reviewsContainer}>
+      <h3 className={css.subTitle}>Reviews</h3>
+      {(error || reviews.length === 0) && (
+        <p className={css.error}>Results not found</p>
+      )}
       {reviews.length > 0 && (
-        <ul>
+        <ul className={css.reviewsList}>
           {reviews.map(({ author, content, created_at, id }) => {
             return (
-              <li key={id}>
-                <p>Author: {author}</p>
-                <p>Created: {created_at.slice(0, 10)}</p>
-                <p>{content}</p>
+              <li className={css.listItem} key={id}>
+                <p className={css.info}>
+                  <span className={css.infoEl}>Author:</span> {author}
+                </p>
+                <p className={css.info}>
+                  <span className={css.infoEl}>Created:</span>{' '}
+                  {created_at.slice(0, 10)}
+                </p>
+                <p>"{content}"</p>
               </li>
             );
           })}

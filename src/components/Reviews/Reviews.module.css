@@ -1,4 +1,4 @@
-.castContainer {
+.reviewsContainer {
   display: flex;
   flex-direction: column;
   margin-top: 16px;
@@ -12,20 +12,14 @@
 .subTitle {
   margin-bottom: 8px;
 }
-.gallery {
-  display: grid;
-  max-width: calc(100vw - 48px);
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  grid-gap: 16px;
-  margin-top: 0;
-  margin-bottom: 20px;
-  padding: 0;
-  list-style: none;
-  margin-left: auto;
-  margin-right: auto;
+.reviewsList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 .info {
   font-style: italic;
+  margin-bottom: 4px;
 }
 .infoEl {
   font-weight: 500;

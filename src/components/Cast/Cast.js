@@ -1,18 +1,18 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import shortid from 'shortid';
 import { getCastById } from '../../services/apiId';
-//! Prop-types
+import defaultImg from '../../img/defaultImg.jpg';
+import css from './Cast.module.css';
 
 function Cast() {
   const { movieId } = useParams();
   const query = Number(movieId);
   const [cast, setCast] = useState([]);
-
-  console.log(query);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     if (!query) {
-      console.log('gjh,b');
       return;
     }
 
@@ -22,25 +22,35 @@ function Cast() {
         setCast(response.data.cast);
       })
       .catch(error => {
-        console.log(error.message);
+        setError(error.message);
       });
   }, [query]);
 
   console.log(cast);
   return (
-    <div>
-      <h1>Cast</h1>
+    <div className={css.castContainer}>
+      <h3 className={css.subTitle}>Cast</h3>
+      {(error || cast.length === 0) && (
+        <p className={css.error}>Results not found</p>
+      )}
       {cast.length > 0 && (
-        <ul>
-          {cast.map(({ profile_path, name, character, id }) => {
+        <ul className={css.gallery}>
+          {cast.map(({ profile_path, name, character }) => {
             return (
-              <li key={id}>
-                <img
-                  src={`https://image.tmdb.org/t/p/w200/${profile_path}`}
-                  alt={name}
-                />
-                <p>{name}</p>
-                <p>Character: {character}</p>
+              <li key={shortid.generate()}>
+                {profile_path !== null && (
+                  <img
+                    src={`https://image.tmdb.org/t/p/w200/${profile_path}`}
+                    alt={name}
+                  />
+                )}
+                {profile_path === null && (
+                  <img src={defaultImg} alt={name} width={200} height={300} />
+                )}
+                <p className={css.info}>{name}</p>
+                <p className={css.info}>
+                  <span className={css.infoEl}>Character:</span> {character}
+                </p>
               </li>
             );
           })}

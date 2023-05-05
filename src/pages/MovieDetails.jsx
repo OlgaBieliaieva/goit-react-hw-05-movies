@@ -3,14 +3,15 @@ import { useState, useRef, useEffect, Suspense } from 'react';
 import Loader from 'components/Loader/Loader';
 import * as Api from '../services/apiId';
 import Info from '../components/Info/Info';
+import css from './MovieDetails.module.css';
 
 function MovieDetails() {
   const { movieId } = useParams();
-  console.log(useParams());
   const location = useLocation();
   const backLinkLocationRef = useRef(location.state?.from ?? '/');
   const query = Number(movieId);
   const [movie, setMovie] = useState([]);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     if (!query) {
@@ -19,32 +20,36 @@ function MovieDetails() {
 
     Api.getMovieById(query)
       .then(response => {
-        console.log(response.data);
         setMovie(response.data);
       })
       .catch(error => {
-        console.log(error.message);
+        setError(error.message);
       });
   }, [query]);
 
   console.log(movie);
 
   return (
-    <main>
+    <main className={css.pageContainer}>
       <div>
-        <Link to={backLinkLocationRef.current}>⬅ Go back</Link>
+        <Link to={backLinkLocationRef.current} className={css.backLink}>
+          ⬅ Go back
+        </Link>
       </div>
+      {(error || movie.title === false) && (
+        <p className={css.error}>Results not found</p>
+      )}
       {movie.title && (
         <>
           <Info movieInfo={movie} />
-          <h4>Additional information</h4>
-          <ul>
-            <li>
+          <h4 className={css.subtitle}>Additional information</h4>
+          <ul className={css.detailsList}>
+            <li className={css.link}>
               <Link to="cast" state={{ from: location }}>
                 Cast
               </Link>
             </li>
-            <li>
+            <li className={css.link}>
               <Link to="reviews" state={{ from: location }}>
                 Reviews
               </Link>
